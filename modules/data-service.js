@@ -1,3 +1,5 @@
+//Created by Vitto A.
+//Last update: 2022-08-08
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise; // Added to get around the deprecation warning: "Mongoose: promise (mongoose's default promise library) is deprecated"
