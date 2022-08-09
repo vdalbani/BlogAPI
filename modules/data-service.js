@@ -109,6 +109,16 @@ module.exports = function(mongoDBConnectionString){
              
             });
         },
+        getPostById: function(id){
+            return new Promise((resolve,reject)=>{
+                Post.findOne({_id: id}).exec().then(post=>{
+                    resolve(post)
+                }).catch(err=>{
+                    reject(err);
+                });
+            });
+        },
+
         //Finding a search
         getPostByTitle: function(postTitle){
             return new Promise((resolve,reject)=>{
@@ -120,16 +130,6 @@ module.exports = function(mongoDBConnectionString){
             });
         },
         //
-        getPostById: function(id){
-            return new Promise((resolve,reject)=>{
-                Post.findOne({_id: id}).exec().then(post=>{
-                    resolve(post)
-                }).catch(err=>{
-                    reject(err);
-                });
-            });
-        },
-
         updatePostById: function(data, id){
             return new Promise((resolve,reject)=>{
                 Post.updateOne({_id: id}, {
