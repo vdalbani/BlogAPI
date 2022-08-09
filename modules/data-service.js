@@ -109,6 +109,17 @@ module.exports = function(mongoDBConnectionString){
              
             });
         },
+        //Finding a search
+        getPostByTitle: function(postTitle){
+            return new Promise((resolve,reject)=>{
+                Post.findOne({title: postTitle}).exec().then(post=>{
+                    resolve(post)
+                }).catch(err=>{
+                    reject(err);
+                });
+            });
+        },
+        //
         getPostById: function(id){
             return new Promise((resolve,reject)=>{
                 Post.findOne({_id: id}).exec().then(post=>{

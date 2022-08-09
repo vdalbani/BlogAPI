@@ -51,6 +51,7 @@ app.get("/api/tags", (req,res)=>{
     })
 });
 
+//CRUD
 app.get("/api/posts/:id",(req,res)=>{
     data.getPostById(req.params.id).then(data=>{
         res.json(data);
