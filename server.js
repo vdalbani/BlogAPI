@@ -50,10 +50,20 @@ app.get("/api/tags", (req,res)=>{
         res.json({message: `an error occurred: ${err}`});
     })
 });
-
+//**Recent addition */
+app.get("/api/posts/:title", (req,res)=>{
+    data.getPostByTitle(req.params.title)
+    .then(data=>{
+        res.json(data);
+    }).catch((err)=>{
+        res.json({message: `an error ocurred: ${err}`});
+    });
+});
+//
 //CRUD
 app.get("/api/posts/:id",(req,res)=>{
-    data.getPostById(req.params.id).then(data=>{
+    data.getPostById(req.params.id)
+    .then(data=>{
         res.json(data);
     }).catch((err)=>{
         res.json({message: `an error occurred: ${err}`});
