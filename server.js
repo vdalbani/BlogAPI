@@ -1,7 +1,11 @@
+//Created by Vitto A.
+//Last update: 2022-08-08
+
+require("dotenv").config();
 
 //PLACE THE MONGODB STRING FOR THE COLLECTION BLOG 
-const mongoDBConnectionString = "mongodb+srv://adminuser1:myadmin1@cluster0-hcc2p.mongodb.net/blog?retryWrites=true&w=majority";
-const HTTP_PORT = process.env.PORT || 8080;
+const mongoDBConnectionString = process.env.React_App_MONGO_CONNECTION_STRING ;
+const HTTP_PORT = process.env.React_App_PORT || 8080;
 
 const express = require("express");
 const bodyParser = require('body-parser');
@@ -50,7 +54,7 @@ app.get("/api/tags", (req,res)=>{
         res.json({message: `an error occurred: ${err}`});
     })
 });
-//**Recent addition */
+
 app.get("/api/posts/:title", (req,res)=>{
     data.getPostByTitle(req.params.title)
     .then(data=>{
@@ -59,7 +63,7 @@ app.get("/api/posts/:title", (req,res)=>{
         res.json({message: `an error ocurred: ${err}`});
     });
 });
-//
+
 //CRUD
 app.get("/api/posts/:id",(req,res)=>{
     data.getPostById(req.params.id)

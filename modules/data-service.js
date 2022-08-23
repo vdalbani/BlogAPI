@@ -2,7 +2,8 @@
 //Last update: 2022-08-08
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise; // Added to get around the deprecation warning: "Mongoose: promise (mongoose's default promise library) is deprecated"
+// / Added to get around the deprecation warning: "Mongoose: promise (mongoose's default promise library) is deprecated"
+mongoose.Promise = global.Promise;
 
 // Load the schema
 const postSchema = require('./post-schema.js');
@@ -15,11 +16,11 @@ module.exports = function(mongoDBConnectionString){
         connect: function(){
             return new Promise(function(resolve,reject){
                 let db = mongoose.createConnection(mongoDBConnectionString,{ useNewUrlParser: true, useUnifiedTopology: true });
-                
+
                 db.on('error', (err)=>{
                     reject(err);
                 });
-        
+
                 db.once('open', ()=>{
                     Post = db.model("Post", postSchema);
                     resolve();
@@ -43,12 +44,12 @@ module.exports = function(mongoDBConnectionString){
         getAllPosts: function(page, perPage, category, tag){
             return new Promise((resolve,reject)=>{
                 if(+page && +perPage){
-                    
-                        let filter = {}; 
+
+                        let filter = {};
                         if(category) filter.category = category;
                         if(tag) filter.tags = {$in: ["#" + tag]};
 
-                        page = (+page) - 1;                      
+                        page = (+page) - 1;
                         Post.find(filter).sort({postDate: -1}).skip(page * +perPage).limit(+perPage).exec().then(posts=>{
                             resolve(posts)
                         }).catch(err=>{
@@ -61,7 +62,7 @@ module.exports = function(mongoDBConnectionString){
         },
         getCategories: function(){
             return new Promise((resolve,reject)=>{
-                               
+
                 Post.find({}, '-_id category').sort().exec().then(data => {
 
                     let categories = data.map(cat => cat.category).sort();
@@ -82,14 +83,14 @@ module.exports = function(mongoDBConnectionString){
                 }).catch(err => {
                     reject(err);
                 });
-             
+
             });
         },
         getTags: function(){
             return new Promise((resolve,reject)=>{
-                               
+
                 Post.find({}, '-_id tags').exec().then(data => {
-            
+
                     let result = [];
 
                     // join the arrays
@@ -99,14 +100,14 @@ module.exports = function(mongoDBConnectionString){
 
                     // filter the results
                     let filteredResult = result.filter(function(item, pos){
-                        return result.indexOf(item)== pos; 
+                        return result.indexOf(item)== pos;
                     });
 
                     resolve(filteredResult);
                 }).catch(err => {
                     reject(err);
                 });
-             
+
             });
         },
         getPostById: function(id){
@@ -118,7 +119,6 @@ module.exports = function(mongoDBConnectionString){
                 });
             });
         },
-
         //Finding a search
         getPostByTitle: function(postTitle){
             return new Promise((resolve,reject)=>{
@@ -129,7 +129,6 @@ module.exports = function(mongoDBConnectionString){
                 });
             });
         },
-        //
         updatePostById: function(data, id){
             return new Promise((resolve,reject)=>{
                 Post.updateOne({_id: id}, {
